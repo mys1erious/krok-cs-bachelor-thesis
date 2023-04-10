@@ -3,6 +3,7 @@ import {Nunito} from "next/font/google";
 import './globals.css';
 
 import Navbar from "@/app/components/core/Navbar/Navbar";
+import Modal from "@/app/components/core/Modals/Modal";
 
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
     return (
         <html lang="en">
         <body className={font.className}>
+            <Modal actionLabel="Submit" title="Placeholder text" isOpen />
             <Navbar />
             {children}
         </body>
