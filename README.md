@@ -1,1 +1,1 @@
-# krok-cs-bachelor-thesis
+# PC Accessories Website
