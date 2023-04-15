@@ -2,9 +2,10 @@
 
 import React from "react";
 import Container from "@/app/components/core/Container";
-import Logo from "@/app/components/core/Navbar/Logo";
-import Search from "@/app/components/core/Navbar/Search";
-import UserMenu from "@/app/components/core/Navbar/UserMenu";
+import Logo from "@/app/components/navbar/Logo";
+import Search from "@/app/components/navbar/Search";
+import UserMenu from "@/app/components/navbar/UserMenu";
+
 
 const Navbar = () => {
     return (

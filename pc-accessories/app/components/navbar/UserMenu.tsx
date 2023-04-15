@@ -4,8 +4,8 @@ import React, {useCallback, useState} from "react";
 import {AiOutlineMenu} from "react-icons/ai";
 
 import Avatar from "@/app/components/core/Avatar";
-import MenuItem from "@/app/components/core/Navbar/MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
+import MenuItem from "@/app/components/navbar/MenuItem";
 
 
 const UserMenu = () => {
