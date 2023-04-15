@@ -23,14 +23,12 @@ const Button = ({
     icon: Icon
 }: ButtonProps) => {
 
-    const outlineClassName = `${outline ? 'bg-white border-black text-black' : 'bg-red-600 border-red-600 text-white'}`;
-    const smallClassName = `${small ? 'py-1 text-sm font-light border-[1px]' : 'py-3 text-md font-semibold border-2'}`;
-    const buttonClassName = `${outlineClassName} ${smallClassName}`;
     return (
-        <button className={`relative disabled:opacity-70 disabled:cursor-not-allowed rounded-lg hover:opacity-80 
-                            transition w-full ${buttonClassName}`}
-                onClick={onClick}
-                disabled={disabled}>
+        <button onClick={onClick} disabled={disabled} className={
+            `relative disabled:opacity-70 disabled:cursor-not-allowed rounded-lg hover:opacity-80 transition w-full 
+            ${outline ? 'bg-white border-black text-black' : 'bg-red-600 border-red-600 text-white'}
+            ${small ? 'py-1 text-sm font-light border-[1px]' : 'py-3 text-md font-semibold border-2'}`}
+        >
             {Icon && (
                 <Icon className="absolute left-4 top-3" size={24}/>
             )}
