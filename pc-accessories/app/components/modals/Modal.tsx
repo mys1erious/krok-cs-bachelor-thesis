@@ -37,7 +37,7 @@ const Modal = ({
 
     useEffect(() => {
         setShowModal(isOpen);
-    }, []);
+    }, [isOpen]);
 
     const handleClose = useCallback(() => {
         if (disabled) return;
@@ -65,9 +65,12 @@ const Modal = ({
     return (
         <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50
-                            outline-none focus:outline-none bg-neutral-800/60">
-                <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto">
+                            outline-none focus:outline-none bg-neutral-800/60"
+                 onClick={handleClose}>
+                <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto"
+                     onClick={(e) => e.stopPropagation()}>
                     {/* Content */}
+                    {/* Fix ${showModal ? 'translate-y-0' : 'translate-y-full'} to not show the slider */}
                     <div className={`translate duration-${LOAD_ANIMATION_DURATION} h-full 
                                     ${showModal ? 'translate-y-0' : 'translate-y-full'}
                                     ${showModal ? 'opacity-100' : 'opacity-0'}`
@@ -101,6 +104,7 @@ const Modal = ({
                                             label={actionLabel}
                                             onClick={handleSubmit}/>
                                 </div>
+                                {footer}
                             </div>
                         </div>
                     </div>
