@@ -2,14 +2,23 @@
 
 import React, {useCallback, useState} from "react";
 import {AiOutlineMenu} from "react-icons/ai";
+import {signOut} from "next-auth/react";
 
 import Avatar from "@/app/components/core/Avatar";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import MenuItem from "@/app/components/navbar/MenuItem";
+import useLoginModal from "@/app/hooks/useLoginModal";
+import {SafeUser} from "@/app/types";
 
 
-const UserMenu = () => {
+type UserMenuProps = {
+    currentUser?: SafeUser | null;
+};
+
+
+const UserMenu = ({currentUser}: UserMenuProps) => {
     const registerModal = useRegisterModal();
+    const loginModal = useLoginModal();
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = useCallback(() => {
@@ -39,10 +48,19 @@ const UserMenu = () => {
                 <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0
                                 top-12 text-sm">
                     <div className="flex flex-col cursor-pointer">
-                        <>
-                            <MenuItem label="Sign In" onClick={() => {}} />
-                            <MenuItem label="Sign Up" onClick={registerModal.onOpen} />
-                        </>
+                        {currentUser ? (
+                            <>
+                            <MenuItem label="My favorites" onClick={() => {}}/>
+                            <MenuItem label="My Profile" onClick={() => {}}/>
+                            <hr/>
+                            <MenuItem label="Sign Out" onClick={() => signOut()}/>
+                            </>
+                        ) : (
+                            <>
+                            <MenuItem label="Sign In" onClick={loginModal.onOpen}/>
+                            <MenuItem label="Sign Up" onClick={registerModal.onOpen}/>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
