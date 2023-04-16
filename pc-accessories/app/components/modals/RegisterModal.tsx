@@ -12,6 +12,7 @@ import Modal from "@/app/components/modals/Modal";
 import Heading from "@/app/components/core/Heading";
 import Input from "@/app/components/inputs/Input";
 import Button from "@/app/components/core/Button";
+import {Exceptions} from "@/app/constants/constants";
 
 
 const RegisterModal = () => {
@@ -31,7 +32,7 @@ const RegisterModal = () => {
         axios.post('/api/sign-up/', data).then(() => {
             registerModal.onClose();
         }).catch((error) => {
-            toast.error('Something went wrong.');
+            toast.error(Exceptions.SOMETHING_WENT_WRONG);
         }).finally(() => {
             setIsLoading(false);
         })
