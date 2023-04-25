@@ -11,6 +11,7 @@ const Logo = () => {
         <Image className="hidden md:block cursor-pointer" // Reverse hidden/block
                src="/images/logo.png" alt="Logo"
                height="31" width="31"
+               onClick={() => router.push('/')}
         />
     );
 };
