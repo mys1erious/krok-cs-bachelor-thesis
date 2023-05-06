@@ -3,10 +3,11 @@ import {Nunito} from "next/font/google";
 import './globals.css';
 
 import Navbar from "@/app/components/navbar/Navbar";
-import RegisterModal from "@/app/components/modals/RegisterModal";
 import ToasterProvider from "@/app/providers/ToasterProvider";
-import LoginModal from "@/app/components/modals/LoginModal";
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import RegisterModal from "@/app/components/modals/RegisterModal";
+import LoginModal from "@/app/components/modals/LoginModal";
+import CategoriesModal from "@/app/components/modals/CategoriesModal";
 
 
 export const metadata = {
@@ -27,8 +28,11 @@ export default async function RootLayout({children}: { children: React.ReactNode
             <ToasterProvider/>
             <RegisterModal/>
             <LoginModal/>
+            <CategoriesModal/>
             <Navbar currentUser={currentUser}/>
-            {children}
+            <div className="pb-20">
+                {children}
+            </div>
         </body>
         </html>
     );

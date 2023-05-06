@@ -70,7 +70,7 @@ const LoginModal = () => {
             <Button outline label="Continue with Google" icon={FcGoogle}
                     onClick={() => signIn('google')}/>
             <div className="text-neutral-500 text-center mt-4 font-light">
-                <div className="justify-center flex flex-row items-center gap-2">
+                <div className="flex flex-row justify-center items-center gap-2">
                     <div>
                         Don't have an account?
                     </div>
