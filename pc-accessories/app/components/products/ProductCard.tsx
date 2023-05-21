@@ -37,14 +37,20 @@ const ProductCard = ({
     }, [onAction, actionId, disabled]);
 
     return (
-        <div className="col-span-1 cursor-pointer group border border-black border-solid"
+        <div className="col-span-1 cursor-pointer group"
              onClick={() => router.push(`/products/${data.id}/`)}>
             <div className="flex flex-col gap-2 w-full">
-                <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-                    <Image className="object-cover h-full w-full group-hover:scale-110 transition"
+                <div className="aspect-square w-full relative overflow-hidden rounded-xl border border-gray-200">
+                    <Image className="object-cover h-[90%] w-full group-hover:scale-110 transition"
                            alt="Product" src={data.imageSrc} fill />
                     <div className="absolute top-3 right-3">
                         <HeartButton productId={data.id} currentUser={currentUser}/>
+                    </div>
+                </div>
+                <div className="text-sm">
+                    {data.name}
+                    <div>
+                        $ {data.price}
                     </div>
                 </div>
             </div>

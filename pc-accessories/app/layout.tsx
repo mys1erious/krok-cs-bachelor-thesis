@@ -8,6 +8,9 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import RegisterModal from "@/app/components/modals/RegisterModal";
 import LoginModal from "@/app/components/modals/LoginModal";
 import CategoriesModal from "@/app/components/modals/CategoriesModal";
+import ClientOnly from "@/app/components/core/ClientOnly";
+import Footer from "@/app/components/core/Footer";
+import getCategories from "@/app/actions/getCategories";
 
 
 export const metadata = {
@@ -21,18 +24,24 @@ const font = Nunito({
 
 export default async function RootLayout({children}: { children: React.ReactNode }) {
     const currentUser = await getCurrentUser();
+    const categories = await getCategories();
 
     return (
         <html lang="en">
         <body className={font.className}>
+        <ClientOnly>
             <ToasterProvider/>
             <RegisterModal/>
             <LoginModal/>
-            <CategoriesModal/>
+            <CategoriesModal categories={categories}/>
             <Navbar currentUser={currentUser}/>
-            <div className="pb-20">
-                {children}
-            </div>
+        </ClientOnly>
+        <div className="pb-20 min-h-[90%]">
+            {children}
+        </div>
+        <ClientOnly>
+            <Footer/>
+        </ClientOnly>
         </body>
         </html>
     );

@@ -15,12 +15,12 @@ model User {
     name String?
     email String? @unique
     emailVerified DateTime?
+    role String @default("user")
     image String?
     hashedPassword String?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     favoriteIds String[] @db.ObjectId
-
     account Account?
 }
 
@@ -37,7 +37,6 @@ model Account {
     scope String?
     id_token String? @db.String
     session_state String?
-
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
@@ -47,11 +46,34 @@ model Product {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     name String
     description String
-    brand String
-    category String
+    brandId String @db.ObjectId @unique
+    brand Brand @relation(fields: [brandId], references: [id])
+    categoryId String @db.ObjectId @unique
+    category Category @relation(fields: [categoryId], references: [id])
     specs Json
     imageSrc String
     price Int
-    amazonSrc String
     createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    viewCounter Int
+}
+
+
+model Brand {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+    description String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    products Product[]
+}
+
+model Category {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+    description String?
+    specsTemplate Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    products Product[]
 }

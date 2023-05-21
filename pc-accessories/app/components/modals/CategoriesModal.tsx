@@ -9,11 +9,17 @@ import qs from "query-string";
 
 import Modal from "@/app/components/modals/Modal";
 import useCategoriesModal from "@/app/hooks/useCategoriesModal";
-import {allCategories} from "@/app/constants/constants";
+import {CategoryIcons} from "@/app/constants/constants";
 import CategoryInput from "@/app/components/inputs/CategoryInput";
+import {Category} from "@prisma/client";
 
 
-const CategoriesModal = () => {
+type CategoriesModalProps = {
+    categories: Category[]
+};
+
+
+const CategoriesModal = ({categories}: CategoriesModalProps) => {
     const router = useRouter();
     const params = useSearchParams();
     const categoriesModal = useCategoriesModal();
@@ -72,14 +78,15 @@ const CategoriesModal = () => {
     let bodyContent = (
         <div className="flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
-                {allCategories.map((item) => (
-                    <div key={item.label} className="col-span-1">
+                {categories.map((item) => (
+                    <div key={item.id} className="col-span-1">
                         <CategoryInput
                             onClick={(category) => onSelectCategory(category)}
-                            selected={category === item.label && category === params?.get('category')}
-                            label={item.label}
-                            description={item.description}
-                            icon={item.icon}/>
+                            selected={category === item.name && category === params?.get('category')}
+                            label={item.name}
+                            description={item.description || ''}
+                            // @ts-ignore
+                            icon={CategoryIcons[item.name]}/>
                     </div>
                 ))}
             </div>

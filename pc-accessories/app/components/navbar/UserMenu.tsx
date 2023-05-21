@@ -27,10 +27,10 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
         setIsOpen((value) => !value);
     }, []);
 
-    const onMyProfile = useCallback(() => {
+    const onMyFavorites = useCallback(() => {
         if (!currentUser) return loginModal.onOpen();
 
-        // Open My Profile
+        // Open My Favorites
     }, [currentUser, loginModal]);
 
     return (
@@ -38,8 +38,8 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
             <div className="flex flex-row items-center gap-3">
                 <div className="hidden md:block text-sm fond-semibold py-3 px-4 rounded-full hover:bg-neutral-100
                                 transition cursor-pointer"
-                     onClick={onMyProfile}>
-                    My Profile
+                     onClick={onMyFavorites}>
+                    My Favorites
                 </div>
                 <div className="flex flex-row p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 items-center gap-3
                                 rounded-full cursor-pointer hover:shadow-md transition"
@@ -54,14 +54,13 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
 
             {isOpen && (
                 <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0
-                                top-12 text-sm">
+                                top-12 text-sm text-black">
                     <div className="flex flex-col cursor-pointer">
                         <MenuItem label="Categories" onClick={categoriesModal.onOpen}/>
                         <hr/>
                         {currentUser ? (
                             <>
                             <MenuItem label="My favorites" onClick={() => {}}/>
-                            <MenuItem label="My Profile" onClick={() => {}}/>
                             <hr/>
                             <MenuItem label="Sign Out" onClick={() => signOut()}/>
                             </>

@@ -6,9 +6,7 @@ export default async function getProducts() {
         // const products = await prisma.product.findMany({
         //     // orderBy: {createdAt: 'desc'}
         // });
-        const products = await prisma.product.findMany();
-        console.log(products);
-        return products;
+        return await prisma.product.findMany();
     } catch (error: any) {
         throw new Error(error);
     }
