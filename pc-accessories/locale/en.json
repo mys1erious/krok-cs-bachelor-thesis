@@ -7,6 +7,9 @@
   "listOfYourFavorites": "List of accessories you favorited!",
   "noFavoritesFound": "No favorites found",
   "noFavoritesFoundMsg": "Looks like you have no favorite products.",
+  "noExactMatches": "No exact matches",
+  "tryChangeFilters": "Try to change your filters",
+  "removeAllFilters": "Remove all filters",
 
   "email": "Email",
   "name": "Name",
@@ -15,6 +18,7 @@
   "myFavorites": "My Favorites",
   "select": "Select",
   "continue_": "Continue",
+  "search": "Search",
   "signIn": "Sign In",
   "signUp": "Sign Up",
   "signOut": "Sign Out",

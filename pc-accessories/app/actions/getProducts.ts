@@ -4,6 +4,7 @@ import {SafeBrand, SafeCategory} from "@/app/types";
 
 export interface IProductParams {
     category?: string;
+    text?: string;
 }
 
 
@@ -13,22 +14,8 @@ export default async function getProducts(
     brands?: SafeBrand[],
 ) {
     try {
-        console.log(params)
-
         let query: any = {};
-
-        // for (const param in params) {
-        //     if (param) query[param] = param;
-        // }
-
-        let {
-            category,
-        } = params;
-
-        category = categories.find(x => x.name === category)?.id;
-        if (category) {
-            query.categoryId = category;
-        }
+        addFilters(query, params, categories);
 
         const products = await prisma.product.findMany({
             where: query,
@@ -42,5 +29,26 @@ export default async function getProducts(
         }));
     } catch (error: any) {
         throw new Error(error);
+    }
+};
+
+
+const addFilters = (query: any, params: IProductParams, categories: SafeCategory[]) => {
+    let {
+        category,
+        text
+    } = params;
+
+    category = categories.find(x => x.name === category)?.id;
+    if (category) {
+        query.categoryId = category;
+    }
+    if (text) {
+        query.OR = [
+            {name: {contains: text, mode: "insensitive"}},
+            {description: {contains: text, mode: "insensitive"}},
+            {brand: {name: {contains: text, mode: "insensitive"}}},
+            {category: {name: {contains: text, mode: "insensitive"}}},
+        ];
     }
 };
