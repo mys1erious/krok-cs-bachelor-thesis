@@ -11,13 +11,13 @@ import Heading from "@/app/components/core/Heading";
 import Input from "@/app/components/inputs/Input";
 import Modal from "@/app/components/modals/Modal";
 import useAdminProductModal from "@/app/hooks/useAdminProductModal";
-import {Brand, Category} from "@prisma/client";
 import SelectInput from "@/app/components/inputs/SelectInput";
+import {SafeBrand, SafeCategory} from "@/app/types";
 
 
 type AdminProductModalProps = {
-    brands: Brand[],
-    categories: Category[],
+    brands: SafeBrand[],
+    categories: SafeCategory[],
 };
 
 
