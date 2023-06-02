@@ -30,7 +30,6 @@ export default async function RootLayout({children}: {
     const currentUser = await getCurrentUser();
     const categories = await getCategories();
 
-
     return (
         <html>
         <body className={font.className}>
