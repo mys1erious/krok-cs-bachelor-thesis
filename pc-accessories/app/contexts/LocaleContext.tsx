@@ -1,16 +1,22 @@
 'use client';
 
 
-import {createContext, useState} from "react";
+import React, {createContext, useState} from "react";
 
-export const LocaleContext = createContext({});
+
+interface LocaleContextType {
+    locale: object;
+    setLocale: React.Dispatch<React.SetStateAction<object>>;
+}
+
+
+export const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 
 export const LanguageProvider = ({children}: any) => {
-    const [locale, setLocale] = useState({});
+    const [locale, setLocale] = useState<object>({});
 
     return (
-        // @ts-ignore
         <LocaleContext.Provider value={{locale, setLocale}}>
             {children}
         </LocaleContext.Provider>

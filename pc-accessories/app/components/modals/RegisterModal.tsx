@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useContext, useState} from "react";
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import {FcGoogle} from "react-icons/fc";
 import toast from "react-hot-toast";
@@ -15,9 +15,12 @@ import Heading from "@/app/components/core/Heading";
 import Input from "@/app/components/inputs/Input";
 import Button from "@/app/components/core/Button";
 import {Exceptions} from "@/app/constants/constants";
+import {LocaleContext} from "@/app/contexts/LocaleContext";
 
 
 const RegisterModal = () => {
+    // @ts-ignore
+    const { locale } = useContext(LocaleContext);
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
     const [isLoading, setIsLoading] = useState(false);
@@ -49,12 +52,12 @@ const RegisterModal = () => {
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
-            <Heading title="Welcome" subtitle="Create an account" />
-            <Input id="email" label="Email" disabled={isLoading}
+            <Heading title={locale.welcome} subtitle={locale.createAccount} />
+            <Input id="email" label={locale.email} disabled={isLoading}
                    register={register} errors={errors} required/>
-            <Input id="name" label="Name" disabled={isLoading}
+            <Input id="name" label={locale.name} disabled={isLoading}
                    register={register} errors={errors} required/>
-            <Input id="password" label="Password" disabled={isLoading}
+            <Input id="password" label={locale.password} disabled={isLoading}
                    register={register} errors={errors} required type="password"/>
         </div>
     );
@@ -62,16 +65,16 @@ const RegisterModal = () => {
     const footerContent = (
         <div className="flex flex-col gap-4 mt-3">
             <hr/>
-            <Button outline label="Continue with Google" icon={FcGoogle}
+            <Button outline label={locale.continueWithGoogle} icon={FcGoogle}
                     onClick={() => signIn('google')}/>
             <div className="text-neutral-500 text-center mt-4 font-light">
                 <div className="flex flex-row justify-center items-center gap-2">
                     <div>
-                        Already have an account?
+                        {locale.alreadyHaveAccount}
                     </div>
                     <div onClick={toggle}
                          className="text-neutral-800 cursor-pointer hover:underline">
-                        Sign In
+                        {locale.signIn}
                     </div>
                 </div>
             </div>
@@ -81,8 +84,8 @@ const RegisterModal = () => {
     return (
         <Modal disabled={isLoading}
                isOpen={registerModal.isOpen}
-               title="Sign Up"
-               actionLabel="Continue"
+               title={locale.signUp}
+               actionLabel={locale.continue_}
                onClose={registerModal.onClose}
                onSubmit={handleSubmit(onSubmit)}
                body={bodyContent}

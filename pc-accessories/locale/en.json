@@ -2,11 +2,26 @@
   "siteName": "PC Accessories",
 
   "categories": "Categories",
-  "myFavorites": "My Favorites",
+  "chooseCategory": "Choose Category",
 
+  "email": "Email",
+  "name": "Name",
+  "password": "Password",
+
+  "myFavorites": "My Favorites",
+  "select": "Select",
+  "continue_": "Continue",
   "signIn": "Sign In",
   "signUp": "Sign Up",
   "signOut": "Sign Out",
+  "continueWithGoogle": "Continue with Google",
+
+  "welcomeBack": "Welcome Back!",
+  "welcome": "Welcome!",
+  "loginInYourAccount": "Login in your account",
+  "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "createAccount": "Create an account",
 
   "footerCopyright": "© 2023 PC Accessories",
   "footerInfo": "KROK Thesis"

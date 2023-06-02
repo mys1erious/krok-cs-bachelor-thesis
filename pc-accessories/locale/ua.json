@@ -2,11 +2,26 @@
   "siteName": "PC Accessories",
 
   "categories": "Категорії",
-  "myFavorites": "Улюблені",
+  "chooseCategory": "Вибрати категорію",
 
+  "email": "Пошта",
+  "name": "Ім'я",
+  "password": "Пароль",
+
+  "myFavorites": "Улюблені",
+  "select": "Вибрати",
+  "continue_": "Продовжити",
   "signIn": "Увійти",
   "signUp": "Реєстрація",
   "signOut": "Вийти",
+  "continueWithGoogle": "Увійти через Google",
+
+  "welcomeBack": "Ласкаво просимо!",
+  "welcome": "Ласкаво просимо!",
+  "loginInYourAccount": "Увійдіть у свій обліковий запис",
+  "dontHaveAccount": "Немає облікового запису?",
+  "alreadyHaveAccount": "Вже є аккаунт?",
+  "createAccount": "Створити обліковий запис",
 
   "footerCopyright": "© 2023 PC Accessories",
   "footerInfo": "KROK Дипломна робота"

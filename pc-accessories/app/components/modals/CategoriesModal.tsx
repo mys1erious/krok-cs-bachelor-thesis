@@ -1,7 +1,7 @@
 'use client';
 
 
-import React, {useCallback} from "react";
+import React, {useCallback, useContext} from "react";
 import {FieldValues, useForm} from "react-hook-form";
 import {useRouter, useSearchParams} from "next/navigation";
 
@@ -13,6 +13,7 @@ import {CategoryIcons} from "@/app/constants/constants";
 import CategoryInput from "@/app/components/inputs/CategoryInput";
 import {Category} from "@prisma/client";
 import {SafeCategory} from "@/app/types";
+import {LocaleContext} from "@/app/contexts/LocaleContext";
 
 
 type CategoriesModalProps = {
@@ -21,6 +22,8 @@ type CategoriesModalProps = {
 
 
 const CategoriesModal = ({categories}: CategoriesModalProps) => {
+    // @ts-ignore
+    const { locale } = useContext(LocaleContext);
     const router = useRouter();
     const params = useSearchParams();
     const categoriesModal = useCategoriesModal();
@@ -98,8 +101,8 @@ const CategoriesModal = ({categories}: CategoriesModalProps) => {
         <Modal isOpen={categoriesModal.isOpen}
                onClose={categoriesModal.onClose}
                onSubmit={categoriesModal.onClose}
-               actionLabel="Select"
-               title="Choose Category"
+               actionLabel={locale.select}
+               title={locale.chooseCategory}
                body={bodyContent}
         />
     )
