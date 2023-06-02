@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React from "react";
 
 import getProducts, {IProductParams} from "@/app/actions/getProducts";
 import Container from "@/app/components/core/Container";
@@ -7,9 +7,6 @@ import ProductCard from "@/app/components/products/ProductCard";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "@/app/components/core/ClientOnly";
 import getCategories from "@/app/actions/getCategories";
-import {SafeProduct} from "@/app/types";
-import {getDictionary} from "@/get-dictionary";
-import LanguageButton from "@/app/components/navbar/LanguageButton";
 
 
 interface HomeProps {
@@ -18,9 +15,6 @@ interface HomeProps {
 
 
 export default async function Home({searchParams}: HomeProps) {
-
-    // const t = await getDictionary(lang);
-
     const categories = await getCategories();
     const products = await getProducts(searchParams, categories);
     const currentUser = await getCurrentUser();

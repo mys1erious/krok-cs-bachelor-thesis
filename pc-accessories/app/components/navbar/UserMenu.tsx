@@ -12,6 +12,8 @@ import {SafeUser} from "@/app/types";
 import useCategoriesModal from "@/app/hooks/useCategoriesModal";
 import LanguageButton from "@/app/components/navbar/LanguageButton";
 import {LocaleContext} from "@/app/contexts/LocaleContext";
+import {useRouter} from "next/navigation";
+
 
 
 type UserMenuProps = {
@@ -22,6 +24,8 @@ type UserMenuProps = {
 const UserMenu = ({currentUser}: UserMenuProps) => {
     // @ts-ignore
     const { locale } = useContext(LocaleContext);
+    const router = useRouter();
+
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
     const categoriesModal = useCategoriesModal();
@@ -31,18 +35,12 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
         setIsOpen((value) => !value);
     }, []);
 
-    const onMyFavorites = useCallback(() => {
-        if (!currentUser) return loginModal.onOpen();
-
-        // Open My Favorites
-    }, [currentUser, loginModal]);
-
     return (
         <div className="relative">
             <div className="flex flex-row items-center gap-3">
                 <div className="hidden md:block text-sm fond-semibold py-3 px-4 rounded-full hover:bg-neutral-100
                                 transition cursor-pointer"
-                     onClick={onMyFavorites}>
+                     onClick={() => router.push('/favorites')}>
                     {locale.myFavorites}
                 </div>
                 <div className="flex flex-row p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 items-center gap-3
@@ -65,7 +63,7 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
                         <hr/>
                         {currentUser ? (
                             <>
-                            <MenuItem label={locale.myFavorites} onClick={() => {}}/>
+                            <MenuItem label={locale.myFavorites} onClick={() => router.push('/favorites')}/>
                             <hr/>
                             <MenuItem label={locale.signOut} onClick={() => signOut()}/>
                             </>

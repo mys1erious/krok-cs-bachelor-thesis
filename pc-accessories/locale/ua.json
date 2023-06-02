@@ -3,6 +3,10 @@
 
   "categories": "Категорії",
   "chooseCategory": "Вибрати категорію",
+  "favorites": "Улюбені",
+  "listOfYourFavorites": "Список ваших улюблених комплектуючих",
+  "noFavoritesFound": "Улюблених не знайдено",
+  "noFavoritesFoundMsg": "Схоже, у вас немає улюблених комплектуючих .",
 
   "email": "Пошта",
   "name": "Ім'я",
