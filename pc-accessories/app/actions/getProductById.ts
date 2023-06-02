@@ -10,10 +10,15 @@ export default async function getProductById(
     try {
         const { productId } = params;
 
-        const product = await prisma.product.findUnique({
+        const product = await prisma.product.update({
             where: {
                 id: productId,
-            }
+            },
+            data: {
+                viewCounter: {
+                    increment: 1
+                },
+            },
         });
 
         if (!product) {

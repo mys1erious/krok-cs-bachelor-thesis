@@ -10,25 +10,34 @@ type IParams = {
     productId?: string;
 }
 
-const ListingPage = async ({ params }: { params: IParams }) => {
-
-    const product = await getProductById(params);
+const ProductPage = async ({ params }: { params: IParams }) => {
     const currentUser = await getCurrentUser();
 
-    if (!product) {
+    try {
+        const product = await getProductById(params);
+
+        if (!product) {
+            return (
+                <ClientOnly>
+                    <EmptyState />
+                </ClientOnly>
+            );
+        }
+
+        // @ts-ignore
+        return (
+            <ClientOnly>
+                <div className="pt-[100px]">{product.name}</div>
+            </ClientOnly>
+        );
+    }
+    catch (e) {
         return (
             <ClientOnly>
                 <EmptyState />
             </ClientOnly>
         );
     }
-
-    // @ts-ignore
-    return (
-        <ClientOnly>
-            <div className="pt-[100px]">{product.name}</div>
-        </ClientOnly>
-    );
 }
 
-export default ListingPage;
+export default ProductPage;
