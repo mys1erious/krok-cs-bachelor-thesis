@@ -11,6 +11,7 @@ import CategoriesModal from "@/app/components/modals/CategoriesModal";
 import ClientOnly from "@/app/components/core/ClientOnly";
 import Footer from "@/app/components/core/Footer";
 import getCategories from "@/app/actions/getCategories";
+import {LanguageProvider} from "@/app/contexts/LocaleContext";
 
 
 export const metadata = {
@@ -22,19 +23,24 @@ const font = Nunito({
     subsets: ['latin'],
 });
 
-export default async function RootLayout({children}: { children: React.ReactNode }) {
+
+export default async function RootLayout({children}: {
+    children: React.ReactNode
+}) {
     const currentUser = await getCurrentUser();
     const categories = await getCategories();
 
+
     return (
-        <html lang="en">
+        <html>
         <body className={font.className}>
+        <LanguageProvider>
         <ClientOnly>
             <ToasterProvider/>
             <RegisterModal/>
             <LoginModal/>
             <CategoriesModal categories={categories}/>
-            <Navbar currentUser={currentUser}/>
+            <Navbar currentUser={currentUser} categories={categories}/>
         </ClientOnly>
         <div className="pb-20 min-h-[90%]">
             {children}
@@ -42,6 +48,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
         <ClientOnly>
             <Footer/>
         </ClientOnly>
+        </LanguageProvider>
         </body>
         </html>
     );

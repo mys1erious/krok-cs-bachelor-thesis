@@ -1,13 +1,16 @@
 'use client';
 
-import React from "react";
+import React, {useContext} from "react";
 import {BiSearch} from "react-icons/bi";
 
 import toast from "react-hot-toast";
 import useCategoriesModal from "@/app/hooks/useCategoriesModal";
+import {LocaleContext} from "@/app/contexts/LocaleContext";
 
 
 const Search = () => {
+    // @ts-ignore
+    const { locale } = useContext(LocaleContext);
     const categoriesModal = useCategoriesModal();
 
     return (
@@ -17,7 +20,7 @@ const Search = () => {
                 <div className="flex flex-row text-sm pl-6 pr-2 items-center gap-3">
                     <div className="hidden sm:block px-2 border-r-[1px]"
                          onClick={categoriesModal.onOpen}>
-                        Categories
+                        {locale.categories}
                     </div>
                     <div className="p-2 bg-red-600 rounded-full"
                          onClick={() => toast.success('Search BTN')}>

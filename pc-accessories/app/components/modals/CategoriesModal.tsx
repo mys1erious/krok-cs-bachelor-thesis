@@ -12,10 +12,11 @@ import useCategoriesModal from "@/app/hooks/useCategoriesModal";
 import {CategoryIcons} from "@/app/constants/constants";
 import CategoryInput from "@/app/components/inputs/CategoryInput";
 import {Category} from "@prisma/client";
+import {SafeCategory} from "@/app/types";
 
 
 type CategoriesModalProps = {
-    categories: Category[]
+    categories: SafeCategory[]
 };
 
 
