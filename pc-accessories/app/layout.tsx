@@ -41,7 +41,7 @@ export default async function RootLayout({children}: {
             <CategoriesModal categories={categories}/>
             <Navbar currentUser={currentUser} categories={categories}/>
         </ClientOnly>
-        <div className="pb-20 min-h-[90%]">
+        <div className="pb-20 min-h-[88%]">
             {children}
         </div>
         <ClientOnly>

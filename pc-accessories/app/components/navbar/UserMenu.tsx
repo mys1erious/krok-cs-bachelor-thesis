@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useCallback, useContext, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {AiOutlineMenu} from "react-icons/ai";
 import {signOut} from "next-auth/react";
 
@@ -30,10 +30,25 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
     const loginModal = useLoginModal();
     const categoriesModal = useCategoriesModal();
     const [isOpen, setIsOpen] = useState(false);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const toggleOpen = useCallback(() => {
         setIsOpen((value) => !value);
     }, []);
+
+    useEffect(() => {
+        if (isOpen) {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+                    setIsOpen(false);
+                }
+            };
+            document.addEventListener("click", handleClickOutside as EventListener);
+            return () => {
+                document.removeEventListener("click", handleClickOutside as EventListener);
+            };
+        }
+    }, [isOpen]);
 
     return (
         <div className="relative">
@@ -45,7 +60,7 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
                 </div>
                 <div className="flex flex-row p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 items-center gap-3
                                 rounded-full cursor-pointer hover:shadow-md transition"
-                     onClick={toggleOpen}
+                     onClick={toggleOpen} ref={inputRef}
                 >
                     <AiOutlineMenu />
                     <div className="hidden md:block">
@@ -59,6 +74,7 @@ const UserMenu = ({currentUser}: UserMenuProps) => {
                 <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0
                                 top-12 text-sm text-black">
                     <div className="flex flex-col cursor-pointer">
+                        <MenuItem label={locale.homePage} onClick={() => router.push('/')}/>
                         <MenuItem label={locale.categories} onClick={categoriesModal.onOpen}/>
                         <hr/>
                         {currentUser ? (
