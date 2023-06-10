@@ -13,6 +13,10 @@
   "noExactMatches": "Немає збігів",
   "tryChangeFilters": "Спробуйте змінити фільтри",
   "removeAllFilters": "Видалити всі фільтри",
+  "resetFilters": "Видалити фільтри",
+  "price": "Ціна",
+  "min": "Мін",
+  "max": "Макс",
 
   "email": "Пошта",
   "name": "Ім'я",

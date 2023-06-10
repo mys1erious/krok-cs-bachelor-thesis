@@ -1,7 +1,7 @@
 'use client';
 
 
-import React, {useCallback, useContext, useRef} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {AiFillFilter} from "react-icons/ai";
 import {SafeBrand, SafeCategory} from "@/app/types";
 import {LocaleContext} from "@/app/contexts/LocaleContext";
@@ -10,6 +10,9 @@ import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import useFilterNavbar from "@/app/hooks/useFilterNavbar";
 import {IoMdClose} from "react-icons/io";
 import FilterNavbarList from "@/app/components/core/FilterNavbarList";
+import MinMaxValueInput from "@/app/components/inputs/MinMaxValueInput";
+import Button from "@/app/components/core/Button";
+import {strToNumber} from "@/app/utils";
 
 
 type FilterNavbarProps = {
@@ -29,12 +32,30 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
     const filterNavbar = useFilterNavbar();
     const inputRef = useRef<HTMLInputElement | null>(null);
 
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(Number.MAX_SAFE_INTEGER);
+
     const toggleNavbar = () => {
         if (filterNavbar.isOpen) filterNavbar.onClose();
         else filterNavbar.onOpen();
     };
 
     const handleBrandOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, brand: SafeBrand) => {
+        setQueryParams(e, {brand: brand.name});
+    }, [router, params]);
+
+    const handlePriceOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setQueryParams(e, {
+            min_price: minPrice.toString(),
+            max_price: maxPrice.toString()
+        }, true);
+    }, [router, params, minPrice, maxPrice]);
+
+    const setQueryParams = useCallback((
+        e: React.ChangeEvent<HTMLInputElement>,
+        queryParams: {[key: string]: string},
+        skipDelete: boolean = false
+    ) => {
         e.stopPropagation();
 
         let currentQuery = {};
@@ -45,11 +66,14 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
 
         const updatedQuery: any = {
             ...currentQuery,
-            brand: brand.name
+            ...queryParams,
         }
 
-        if (params?.get('brand') === brand.name) {
-            delete updatedQuery.brand;
+        if (!skipDelete) {
+            for (const key in queryParams) {
+                if (params?.get(key) === queryParams[key])
+                    delete updatedQuery[key];
+            }
         }
 
         const url = qs.stringifyUrl({
@@ -64,6 +88,11 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
         filterNavbar.onClose();
     }, [filterNavbar.isOpen]);
 
+    const handleResetFilters = () => {
+        router.push('/');
+        setMinPrice(0);
+        setMaxPrice(Number.MAX_SAFE_INTEGER);
+    };
 
     if (!isMainPage) return null;
 
@@ -81,16 +110,20 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
                      onClick={handleClose}/>
                 <div ref={inputRef} className="fixed left-0 top-0 z-50 bg-gray-700 p-4 w-64 h-screen
                                                border-r border-gray-600 text-white">
-                    <h2 className="text-xl font-bold pb-2 border-b border-gray-300">
-                        {locale.filters}
-                        <button className="p-1 border-0 hover:opacity-70 transition absolute right-9"
-                                onClick={handleClose}>
-                            <IoMdClose size={18}/>
-                        </button>
-                    </h2>
+                    <div className="text-xl font-bold pb-2 border-b border-gray-300">
+                        <h2>
+                            {locale.filters}
+                            <button className="p-1 border-0 hover:opacity-70 transition absolute right-9"
+                                    onClick={handleClose}>
+                                <IoMdClose size={18}/>
+                            </button>
+                        </h2>
+                        <Button label={locale.resetFilters} onClick={handleResetFilters} small/>
+                    </div>
                     <FilterNavbarList label={locale.brands} items={brands} idField="id" nameField="name"
                                       onChange={handleBrandOnChange} queryParam="brand"/>
-
+                    <MinMaxValueInput onClick={handlePriceOnChange} minValue={minPrice} maxValue={maxPrice}
+                                      setMinValue={setMinPrice} setMaxValue={setMaxPrice} label={locale.price}/>
                 </div>
             </>
         )}

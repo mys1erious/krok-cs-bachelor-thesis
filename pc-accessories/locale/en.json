@@ -13,6 +13,10 @@
   "noExactMatches": "No exact matches",
   "tryChangeFilters": "Try to change your filters",
   "removeAllFilters": "Remove all filters",
+  "resetFilters": "Reset filters",
+  "price": "Price",
+  "min": "Min",
+  "max": "Max",
 
   "email": "Email",
   "name": "Name",
