@@ -18,7 +18,9 @@ const DetailList = ({product, brand, category}: DetailListProps) => {
               <DetailListItem name="Description" val={product.description}/>
               <DetailListItem name="Brand" val={brand?.name || ''}/>
               <DetailListItem name="Category" val={category?.name || ''}/>
+              {/* @ts-ignore */}
               {Object.entries(product.specs).map(([key, val]) => (
+                  // @ts-ignore
                   <DetailListItem key={key} name={key} val={val}/>
               ))}
           </ul>

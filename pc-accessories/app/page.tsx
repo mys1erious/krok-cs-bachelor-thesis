@@ -7,6 +7,8 @@ import ProductCard from "@/app/components/products/ProductCard";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "@/app/components/core/ClientOnly";
 import getCategories from "@/app/actions/getCategories";
+import FilterNavbar from "@/app/components/core/FilterNavbar";
+import getBrands from "@/app/actions/getBrands";
 
 
 interface HomeProps {
@@ -16,7 +18,8 @@ interface HomeProps {
 
 export default async function Home({searchParams}: HomeProps) {
     const categories = await getCategories();
-    const products = await getProducts(searchParams, categories);
+    const brands = await getBrands();
+    const products = await getProducts(searchParams, categories, brands);
     const currentUser = await getCurrentUser();
 
     if (products.length === 0) return (

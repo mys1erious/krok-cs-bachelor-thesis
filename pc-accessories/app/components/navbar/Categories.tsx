@@ -4,7 +4,6 @@
 import React from "react";
 import Container from "@/app/components/core/Container";
 import {usePathname, useSearchParams} from "next/navigation";
-import {IconType} from "react-icons";
 import {SafeCategory} from "@/app/types";
 import CategoryBox from "@/app/components/products/CategoryBox";
 import {CategoryIcons} from "@/app/constants/constants";
@@ -19,12 +18,9 @@ const Categories = ({categories}: CategoriesProps) => {
     const params = useSearchParams();
     const category = params?.get('category');
     const pathname = usePathname();
-    // const isMainPage = i18n.locales.some(locale => pathname === `/${locale}`);
     const isMainPage = pathname === '/';
 
-    if (!isMainPage) {
-        return null;
-    }
+    if (!isMainPage) return null;
 
     return (
         <div className="bg-white rounded-b-xl h-16 min-w-[300px] w-1/2 m-auto shadow-md">

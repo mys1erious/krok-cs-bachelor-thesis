@@ -12,6 +12,8 @@ import ClientOnly from "@/app/components/core/ClientOnly";
 import Footer from "@/app/components/core/Footer";
 import getCategories from "@/app/actions/getCategories";
 import {LanguageProvider} from "@/app/contexts/LocaleContext";
+import getBrands from "@/app/actions/getBrands";
+import FilterNavbar from "@/app/components/core/FilterNavbar";
 
 
 export const metadata = {
@@ -29,12 +31,14 @@ export default async function RootLayout({children}: {
 }) {
     const currentUser = await getCurrentUser();
     const categories = await getCategories();
+    const brands = await getBrands();
 
     return (
         <html>
         <body className={font.className}>
         <LanguageProvider>
         <ClientOnly>
+            <FilterNavbar categories={categories} brands={brands}/>
             <ToasterProvider/>
             <RegisterModal/>
             <LoginModal/>
