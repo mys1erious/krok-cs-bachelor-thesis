@@ -2,7 +2,7 @@
 
 
 import {useRouter} from "next/navigation";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -13,6 +13,7 @@ import Modal from "@/app/components/modals/Modal";
 import useAdminProductModal from "@/app/hooks/useAdminProductModal";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import {SafeBrand, SafeCategory} from "@/app/types";
+import aws from "@/app/api/upload-img/route";
 
 
 type AdminProductModalProps = {
@@ -29,6 +30,7 @@ const AdminProductModal = ({brands, categories}: AdminProductModalProps) => {
 
     const [selectedBrand, setSelectedBrand] = useState(brands[0].id);
     const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
+    const [file, setFile] = useState<File>();
 
     const {
         register,
@@ -50,19 +52,21 @@ const AdminProductModal = ({brands, categories}: AdminProductModalProps) => {
         }
     });
 
-    const getCurrentSpecs = () => {
+    const getCurrentSpecs = useCallback( () => {
         const category = categories.find(category => category.id === selectedCategory);
         if (category) return category.specsTemplate as object;
         return {};
-    };
+    }, [selectedCategory]);
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
+    const onSubmit: SubmitHandler<FieldValues> = async(data) => {
+        const imageSrc = await uploadImage();
+        if (!imageSrc) {
+            setIsLoading(false);
+            return;
+        }
 
         data = parseSpecs(data);
-        // TODO: REMOVE
-        data.imageSrc = 'https://games-sales.s3.eu-west-2.amazonaws.com/projects/pc_accessories/products/3090_1.jpg';
-
+        data.imageSrc = imageSrc;
         data.brandId = selectedBrand;
         data.categoryId = selectedCategory;
 
@@ -79,6 +83,34 @@ const AdminProductModal = ({brands, categories}: AdminProductModalProps) => {
             .finally(() => {
                 setIsLoading(false);
             })
+    };
+
+    const storeImage = (e: any) => {
+        setFile(e.target.files[0]);
+    };
+
+    const uploadImage = async() => {
+        const responseData = await aws(file);
+
+        const responseMsg = String(responseData);
+        if (responseMsg === Success.IMAGE_UPLOADED) {
+            toast.success(String(responseData));
+            const fileName = file?.name;
+            // @ts-ignore
+            setFile(null);
+            // @ts-ignore
+            return getImageUrl(fileName);
+        }
+        else {
+            toast.error(String(responseData));
+            // @ts-ignore
+            setFile(null);
+            return false;
+        }
+    };
+
+    const getImageUrl = (name: string) => {
+        return `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_S3_REGION}.amazonaws.com/${name}`;
     }
 
     const parseSpecs = (original: any) => {
@@ -135,7 +167,16 @@ const AdminProductModal = ({brands, categories}: AdminProductModalProps) => {
                 required
                 type="number"
             />
-            {/*<div>IMAGE</div>*/}
+            <div className="relative mt-1">
+                <label htmlFor="file-input" id="custom-button">
+                    <span className="font-light p-1 bg-white border-2 border-black rounded-md outline-none transition
+                       hover:bg-red-600 hover:opacity-80 hover:text-white">
+                        Choose Image
+                    </span>
+                    <span>{file?.name}</span>
+                </label>
+                <input  className="hidden" id="file-input" type="file" onChange={(e) => storeImage(e)}/>
+            </div>
         </div>
     );
 

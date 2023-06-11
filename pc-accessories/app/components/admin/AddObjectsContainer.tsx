@@ -11,7 +11,6 @@ const AddObjectsContainer = () => {
     const brandModal = useAdminBrandModal();
     const categoryModal = useAdminCategoryModal();
     const productModal = useAdminProductModal();
-
     return (
             <div className="flex flex-col items-start min-h-screen w-full pt-24 space-y-2 px-2
                             border-r border-gray-300">

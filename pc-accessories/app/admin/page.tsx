@@ -12,7 +12,6 @@ export default async function AdminPage() {
 
     if (!currentUser || currentUser.role !== Roles.ADMIN)
         return <Erorr403/>;
-
     return (
         <ClientOnly>
             <Container>
