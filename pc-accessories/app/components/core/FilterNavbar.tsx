@@ -33,7 +33,7 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(Number.MAX_SAFE_INTEGER);
+    const [maxPrice, setMaxPrice] = useState(0);
 
     const toggleNavbar = () => {
         if (filterNavbar.isOpen) filterNavbar.onClose();
@@ -91,7 +91,7 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
     const handleResetFilters = () => {
         router.push('/');
         setMinPrice(0);
-        setMaxPrice(Number.MAX_SAFE_INTEGER);
+        setMaxPrice(0);
     };
 
     if (!isMainPage) return null;

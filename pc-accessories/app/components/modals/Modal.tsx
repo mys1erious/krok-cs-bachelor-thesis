@@ -4,8 +4,6 @@ import React, {useCallback, useEffect, useState} from "react";
 import {IoMdClose} from "react-icons/io";
 import Button from "@/app/components/core/Button";
 
-const LOAD_ANIMATION_DURATION = 300;
-
 
 type ModalProps = {
     isOpen?: boolean;
@@ -43,9 +41,6 @@ const Modal = ({
         if (disabled) return;
 
         setShowModal(false);
-        // setTimeout(() => {
-        //     onClose();
-        // }, LOAD_ANIMATION_DURATION);
         onClose();
     }, [disabled, onClose]);
 
@@ -63,14 +58,13 @@ const Modal = ({
         return null;
     }
 
-    // {/* Fix ${showModal ? 'translate-y-0' : 'translate-y-full'} to not show the slider */}
-    // translate duration-300
     return (
         <>
             <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50
                             outline-none focus:outline-none bg-neutral-800/60"
                  onClick={handleClose}>
-                <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto"
+                <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto
+                overflow-hidden"
                      onClick={(e) => e.stopPropagation()}>
                     {/* Content */}
                     <div className={`h-full ${showModal ? 'opacity-100' : 'opacity-0'}`}>
@@ -87,7 +81,7 @@ const Modal = ({
                                 </button>
                             </div>
                             {/* Body */}
-                            <div className="flex-auto relative p-6">
+                            <div className="flex-auto relative p-6 overflow-auto">
                                 {body}
                             </div>
                             {/* Footer */}

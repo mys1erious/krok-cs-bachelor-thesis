@@ -59,9 +59,10 @@ const AdminProductModal = ({brands, categories}: AdminProductModalProps) => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
 
-        // TODO: REMOVE
         data = parseSpecs(data);
+        // TODO: REMOVE
         data.imageSrc = 'https://games-sales.s3.eu-west-2.amazonaws.com/projects/pc_accessories/products/3090_1.jpg';
+
         data.brandId = selectedBrand;
         data.categoryId = selectedCategory;
 
