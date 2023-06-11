@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+
+
 import React from "react";
 
 import getProducts, {IProductParams} from "@/app/actions/getProducts";
@@ -19,7 +22,7 @@ interface HomeProps {
 export default async function Home({searchParams}: HomeProps) {
     const categories = await getCategories();
     const brands = await getBrands();
-    const products = await getProducts({}, categories, brands);
+    const products = await getProducts(searchParams, categories, brands);
     const currentUser = await getCurrentUser();
 
     if (products.length === 0) return (
@@ -32,7 +35,7 @@ export default async function Home({searchParams}: HomeProps) {
         <ClientOnly>
             <FilterNavbar brands={brands} products={products}/>
             <Container>
-                <ProductsGrid products={products} currentUser={currentUser} params={{}}/>
+                <ProductsGrid products={products} currentUser={currentUser} params={searchParams}/>
             </Container>
         </ClientOnly>
     );
