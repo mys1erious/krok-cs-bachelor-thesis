@@ -13,3 +13,11 @@ export function strToNumber(str: string) {
         return null;
     }
 }
+
+export enum OrderByChoices {
+    DATE_ADDED = 'dateAdded',
+    PRICE_ASC = 'priceAsc',
+    PRICE_DESC = 'priceDesc',
+    ALPHABET = 'alphabet',
+    VIEW_COUNTER = 'viewCounter',
+}

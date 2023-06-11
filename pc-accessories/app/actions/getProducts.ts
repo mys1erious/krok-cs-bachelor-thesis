@@ -1,6 +1,6 @@
 import prisma from "@/app/libs/prismadb";
 import {SafeBrand, SafeCategory} from "@/app/types";
-import {strToNumber} from "@/app/utils";
+import {OrderByChoices, strToNumber} from "@/app/utils";
 
 
 export interface IProductParams {
@@ -9,6 +9,7 @@ export interface IProductParams {
     text?: string;
     min_price?: string;
     max_price?: string;
+    order_by?: string;
 }
 
 
@@ -23,7 +24,7 @@ export default async function getProducts(
 
         const products = await prisma.product.findMany({
             where: query,
-            orderBy: {createdAt: 'desc'}
+            orderBy: addOrderBy(params.order_by)
         });
 
         return products.map((product) => ({
@@ -34,6 +35,23 @@ export default async function getProducts(
     } catch (error: any) {
         throw new Error(error);
     }
+};
+
+
+const addOrderBy = (orderByVal: string|undefined) => {
+    const orderByLookup = {
+        [OrderByChoices.DATE_ADDED]: { createdAt: 'desc' },
+        [OrderByChoices.PRICE_ASC]: { price: 'asc' },
+        [OrderByChoices.PRICE_DESC]: { price: 'desc' },
+        [OrderByChoices.VIEW_COUNTER]: { viewCounter: 'desc' },
+        [OrderByChoices.ALPHABET]: { name: 'asc' },
+    };
+    if (orderByVal && orderByLookup.hasOwnProperty(orderByVal)) {
+        // @ts-ignore
+        return orderByLookup[orderByVal];
+    }
+
+    if (!orderByVal) return {createdAt: 'desc'};
 };
 
 

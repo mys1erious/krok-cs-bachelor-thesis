@@ -31,7 +31,7 @@ const MinMaxValueInput = ({onClick, minValue, setMinValue, maxValue, setMaxValue
 
     return (
         <div className="mt-2">
-            {label && (label)}
+            <span className="text-lg font-semibold">{label && (label)}</span>
             <div className="flex space-x-2 justify-center text-xs text-black mt-1">
                 <input type="number" className="border border-gray-300 rounded-md px-2 py-1 w-20"
                        placeholder={locale.min}

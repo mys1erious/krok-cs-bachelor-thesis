@@ -3,7 +3,7 @@
 
 import React, {useCallback, useContext, useRef, useState} from 'react';
 import {AiFillFilter} from "react-icons/ai";
-import {SafeBrand, SafeCategory} from "@/app/types";
+import {SafeBrand} from "@/app/types";
 import {LocaleContext} from "@/app/contexts/LocaleContext";
 import qs from "query-string";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
@@ -12,16 +12,17 @@ import {IoMdClose} from "react-icons/io";
 import FilterNavbarList from "@/app/components/core/FilterNavbarList";
 import MinMaxValueInput from "@/app/components/inputs/MinMaxValueInput";
 import Button from "@/app/components/core/Button";
-import {strToNumber} from "@/app/utils";
+import SelectInput from "@/app/components/inputs/SelectInput";
+import {BiSearch} from "react-icons/bi";
+import {OrderByChoices} from "@/app/utils";
 
 
 type FilterNavbarProps = {
-    categories: SafeCategory[],
     brands: SafeBrand[]
 }
 
 
-const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
+const FilterNavbar = ({brands}: FilterNavbarProps) => {
     const router = useRouter();
     const params = useSearchParams();
     const pathname = usePathname();
@@ -34,6 +35,7 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
 
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
+    const [selectedOrderBy, setSelectedOrderBy] = useState<string>(OrderByChoices.DATE_ADDED);
 
     const toggleNavbar = () => {
         if (filterNavbar.isOpen) filterNavbar.onClose();
@@ -51,8 +53,13 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
         }, true);
     }, [router, params, minPrice, maxPrice]);
 
+    const handleOrderByOnChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>, value: string) => {
+        setSelectedOrderBy(value);
+        setQueryParams(e, {order_by: value});
+    }, [router, params]);
+
     const setQueryParams = useCallback((
-        e: React.ChangeEvent<HTMLInputElement>,
+        e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>,
         queryParams: {[key: string]: string},
         skipDelete: boolean = false
     ) => {
@@ -120,10 +127,24 @@ const FilterNavbar = ({categories, brands}: FilterNavbarProps) => {
                         </h2>
                         <Button label={locale.resetFilters} onClick={handleResetFilters} small/>
                     </div>
+                    <div className="text-lg font-semibold border-b border-gray-300 pb-4">
+                        {locale.orderBy}
+                        <select className="w-full font-light text-sm p-1 bg-white border-2 rounded-md outline-none transition
+                        border-black text-black"
+                                onChange={(e) => handleOrderByOnChange(e, e.target.value)}>
+                            {Object.values(OrderByChoices).map((val: string) => (
+                                <option key={val} value={val}>
+                                    {locale[val]}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <FilterNavbarList label={locale.brands} items={brands} idField="id" nameField="name"
                                       onChange={handleBrandOnChange} queryParam="brand"/>
-                    <MinMaxValueInput onClick={handlePriceOnChange} minValue={minPrice} maxValue={maxPrice}
-                                      setMinValue={setMinPrice} setMaxValue={setMaxPrice} label={locale.price}/>
+                    <div className="border-b border-gray-300 pb-4">
+                        <MinMaxValueInput onClick={handlePriceOnChange} minValue={minPrice} maxValue={maxPrice}
+                                          setMinValue={setMinPrice} setMaxValue={setMaxPrice} label={locale.price}/>
+                    </div>
                 </div>
             </>
         )}

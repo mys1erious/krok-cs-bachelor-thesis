@@ -17,6 +17,12 @@
   "price": "Price",
   "min": "Min",
   "max": "Max",
+  "orderBy": "Order By",
+  "priceAsc": "Price Asc",
+  "priceDesc": "Price Desc",
+  "alphabet": "Alphabet",
+  "viewCounter": "View Count",
+  "dateAdded": "Date Added",
 
   "email": "Email",
   "name": "Name",
