@@ -3,7 +3,7 @@
 
 import React, {useCallback, useContext, useRef, useState} from 'react';
 import {AiFillFilter} from "react-icons/ai";
-import {SafeBrand} from "@/app/types";
+import {SafeBrand, SafeProduct} from "@/app/types";
 import {LocaleContext} from "@/app/contexts/LocaleContext";
 import qs from "query-string";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
@@ -14,15 +14,17 @@ import MinMaxValueInput from "@/app/components/inputs/MinMaxValueInput";
 import Button from "@/app/components/core/Button";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import {BiSearch} from "react-icons/bi";
-import {OrderByChoices} from "@/app/utils";
+import {OrderByChoices, unslugify} from "@/app/utils";
+import CheckboxInput from "@/app/components/inputs/CheckboxInput";
 
 
 type FilterNavbarProps = {
     brands: SafeBrand[]
+    products?: SafeProduct[]
 }
 
 
-const FilterNavbar = ({brands}: FilterNavbarProps) => {
+const FilterNavbar = ({brands, products}: FilterNavbarProps) => {
     const router = useRouter();
     const params = useSearchParams();
     const pathname = usePathname();
@@ -35,7 +37,6 @@ const FilterNavbar = ({brands}: FilterNavbarProps) => {
 
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
-    const [selectedOrderBy, setSelectedOrderBy] = useState<string>(OrderByChoices.DATE_ADDED);
 
     const toggleNavbar = () => {
         if (filterNavbar.isOpen) filterNavbar.onClose();
@@ -54,8 +55,15 @@ const FilterNavbar = ({brands}: FilterNavbarProps) => {
     }, [router, params, minPrice, maxPrice]);
 
     const handleOrderByOnChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>, value: string) => {
-        setSelectedOrderBy(value);
         setQueryParams(e, {order_by: value});
+    }, [router, params]);
+
+    const handleDynamicSpecOnChange = useCallback((
+        e: React.ChangeEvent<HTMLInputElement>,
+        spec: string,
+        value: string
+    ) => {
+        setQueryParams(e, {[spec]: value});
     }, [router, params]);
 
     const setQueryParams = useCallback((
@@ -101,6 +109,47 @@ const FilterNavbar = ({brands}: FilterNavbarProps) => {
         setMaxPrice(0);
     };
 
+    const getSpecParamStr = (specKey: string) => `spec_${specKey}`;
+    const addCategoryFilters = useCallback(() => {
+        if (!products || !params?.get('category')) return (<></>);
+
+        const allSpecValues = products.reduce((values: any, product) => {
+            // @ts-ignore
+            const specKeys = Object.keys(product.specs);
+            specKeys.forEach((specKey) => {
+                if (!values[specKey]) {
+                    values[specKey] = new Set();
+                }
+                // @ts-ignore
+                values[specKey].add(product.specs[specKey]);
+            });
+            return values;
+        }, {});
+
+        return (
+            <>
+            {Object.entries(allSpecValues).map(([specKey, specValues]) => (
+                // @ts-ignore
+                <div key={specKey} className={`py-2 border-b border-gray-300 ${[...specValues].length > 8 ? 'max-h-64 overflow-y-auto' : ''}`}>
+                    <h3 className="text-lg font-semibold mb-2">{unslugify(specKey)}</h3>
+                    <ul className="space-y-2">
+                        {/* @ts-ignore */}
+                        {[...specValues].map((val: any, idx) => (
+                            <CheckboxInput key={idx} label={val}
+                                           checked={qs.parse(params.toString())[getSpecParamStr(specKey)] === val}
+                                           onChange={(e: any) => {
+                                               handleDynamicSpecOnChange(e, getSpecParamStr(specKey), val)
+                                           }}/>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+            </>
+        );
+    }, [params, products]);
+
+    const dynamicFilters = addCategoryFilters();
+
     if (!isMainPage) return null;
 
     return (
@@ -116,7 +165,7 @@ const FilterNavbar = ({brands}: FilterNavbarProps) => {
                 <div className="fixed inset-0 z-40 outline-none focus:outline-none bg-neutral-800/60"
                      onClick={handleClose}/>
                 <div ref={inputRef} className="fixed left-0 top-0 z-50 bg-gray-700 p-4 w-64 h-screen
-                                               border-r border-gray-600 text-white">
+                                               border-r border-gray-600 text-white overflow-auto">
                     <div className="text-xl font-bold pb-2 border-b border-gray-300">
                         <h2>
                             {locale.filters}
@@ -145,6 +194,7 @@ const FilterNavbar = ({brands}: FilterNavbarProps) => {
                         <MinMaxValueInput onClick={handlePriceOnChange} minValue={minPrice} maxValue={maxPrice}
                                           setMinValue={setMinPrice} setMaxValue={setMaxPrice} label={locale.price}/>
                     </div>
+                    {dynamicFilters}
                 </div>
             </>
         )}

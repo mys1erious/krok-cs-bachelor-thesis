@@ -3,12 +3,12 @@ import React from "react";
 import getProducts, {IProductParams} from "@/app/actions/getProducts";
 import Container from "@/app/components/core/Container";
 import EmptyState from "@/app/components/core/EmptyState";
-import ProductCard from "@/app/components/products/ProductCard";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "@/app/components/core/ClientOnly";
 import getCategories from "@/app/actions/getCategories";
 import FilterNavbar from "@/app/components/core/FilterNavbar";
 import getBrands from "@/app/actions/getBrands";
+import ProductsGrid from "@/app/components/products/ProductsGrid";
 
 
 interface HomeProps {
@@ -30,13 +30,9 @@ export default async function Home({searchParams}: HomeProps) {
 
     return (
         <ClientOnly>
+            <FilterNavbar brands={brands} products={products}/>
             <Container>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5
-                            2xl:grid-cols-6 pt-40 gap-8">
-                    {products.map((product: any) => (
-                        <ProductCard key={product.id} data={product} currentUser={currentUser}/>
-                    ))}
-                </div>
+                <ProductsGrid products={products} currentUser={currentUser} params={searchParams}/>
             </Container>
         </ClientOnly>
     );

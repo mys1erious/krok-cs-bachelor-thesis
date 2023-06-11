@@ -46,9 +46,9 @@ model Product {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     name String
     description String
-    brandId String @db.ObjectId @unique
+    brandId String @db.ObjectId
     brand Brand @relation(fields: [brandId], references: [id])
-    categoryId String @db.ObjectId @unique
+    categoryId String @db.ObjectId
     category Category @relation(fields: [categoryId], references: [id])
     specs Json
     imageSrc String

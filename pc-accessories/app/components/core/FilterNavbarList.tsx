@@ -20,8 +20,10 @@ type FilterNavbarListProps = {
 const FilterNavbarList = ({label, items, idField, nameField, onChange, queryParam}: FilterNavbarListProps) => {
     const params = useSearchParams();
 
+    const shouldAddScrollbar = items.length > 8;
+
     return (
-        <div className="py-2 border-b border-gray-300">
+        <div className={`py-2 border-b border-gray-300 ${shouldAddScrollbar ? 'max-h-64 overflow-y-auto' : ''}`}>
             <h3 className="text-lg font-semibold mb-2">{label}</h3>
             <ul className="space-y-2">
                 {items.map((item: any) => (

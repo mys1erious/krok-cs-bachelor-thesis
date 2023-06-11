@@ -1,6 +1,7 @@
 import prisma from "@/app/libs/prismadb";
-import {SafeBrand, SafeCategory} from "@/app/types";
+import {SafeBrand, SafeCategory, SafeProduct} from "@/app/types";
 import {OrderByChoices, strToNumber} from "@/app/utils";
+import {Product} from "@prisma/client";
 
 
 export interface IProductParams {
@@ -22,7 +23,7 @@ export default async function getProducts(
         let query: any = {};
         addFilters(query, params, categories, brands);
 
-        const products = await prisma.product.findMany({
+        let products = await prisma.product.findMany({
             where: query,
             orderBy: addOrderBy(params.order_by)
         });
@@ -38,13 +39,13 @@ export default async function getProducts(
 };
 
 
-const addOrderBy = (orderByVal: string|undefined) => {
+const addOrderBy = (orderByVal: string | undefined) => {
     const orderByLookup = {
-        [OrderByChoices.DATE_ADDED]: { createdAt: 'desc' },
-        [OrderByChoices.PRICE_ASC]: { price: 'asc' },
-        [OrderByChoices.PRICE_DESC]: { price: 'desc' },
-        [OrderByChoices.VIEW_COUNTER]: { viewCounter: 'desc' },
-        [OrderByChoices.ALPHABET]: { name: 'asc' },
+        [OrderByChoices.DATE_ADDED]: {createdAt: 'desc'},
+        [OrderByChoices.PRICE_ASC]: {price: 'asc'},
+        [OrderByChoices.PRICE_DESC]: {price: 'desc'},
+        [OrderByChoices.VIEW_COUNTER]: {viewCounter: 'desc'},
+        [OrderByChoices.ALPHABET]: {name: 'asc'},
     };
     if (orderByVal && orderByLookup.hasOwnProperty(orderByVal)) {
         // @ts-ignore
@@ -75,11 +76,11 @@ const addFilters = (query: any, params: IProductParams, categories: SafeCategory
     }
     if (min_price) {
         const val = strToNumber(min_price);
-        if (val) query.price = { ...query.price, gte: val };
+        if (val) query.price = {...query.price, gte: val};
     }
     if (max_price) {
         const val = strToNumber(max_price);
-        if (val) query.price = { ...query.price, lte: val };
+        if (val) query.price = {...query.price, lte: val};
     }
 
     if (text) {
