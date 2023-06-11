@@ -115,11 +115,14 @@ const AdminProductModal = ({brands, categories}: AdminProductModalProps) => {
 
     const parseSpecs = (original: any) => {
         const specs = {};
+        const specsTemplate = getCurrentSpecs();
 
         for (let key of Object.keys(original)) {
             if (key.startsWith('spec_')) {
+                const spec = key.replace('spec_', '');
+                if (!Object.keys(specsTemplate).includes(spec)) continue;
                 // @ts-ignore
-                specs[key.slice(5)] = original[key];
+                specs[spec] = original[key];
                 delete original[key];
             }
         }
