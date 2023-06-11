@@ -11,11 +11,13 @@ import {IProductParams} from "@/app/actions/getProducts";
 type ProductsGridProps = {
     products: SafeProduct[],
     currentUser: SafeUser|null,
-    params?: IProductParams
+    params: IProductParams
 }
 
 
 const ProductsGrid = ({products, currentUser, params}: ProductsGridProps) => {
+    if (!params) params = {};
+
     const getFilteredProducts = useCallback(() => {
         // @ts-ignore
         const specKeys = Object.keys(params).filter(key => key.startsWith('spec_'));

@@ -65,13 +65,13 @@ const addFilters = (query: any, params: IProductParams, categories: SafeCategory
         max_price
     } = params;
 
-    category = categories.find(x => x.name === category)?.id;
     if (category) {
+        category = categories.find(x => x.name === category)?.id;
         query.categoryId = category;
     }
 
-    brand = brands.find(x => x.name === brand)?.id;
     if (brand) {
+        brand = brands.find(x => x.name === brand)?.id;
         query.brandId = brand;
     }
     if (min_price) {
