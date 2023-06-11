@@ -11,7 +11,7 @@ import {IProductParams} from "@/app/actions/getProducts";
 type ProductsGridProps = {
     products: SafeProduct[],
     currentUser: SafeUser|null,
-    params: IProductParams
+    params?: IProductParams
 }
 
 

@@ -32,7 +32,7 @@ export default async function Home({searchParams}: HomeProps) {
         <ClientOnly>
             <FilterNavbar brands={brands} products={products}/>
             <Container>
-                <ProductsGrid products={products} currentUser={currentUser} params={searchParams}/>
+                <ProductsGrid products={products} currentUser={currentUser}/>
             </Container>
         </ClientOnly>
     );
