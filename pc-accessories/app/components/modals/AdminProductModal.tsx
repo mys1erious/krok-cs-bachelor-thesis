@@ -13,7 +13,7 @@ import Modal from "@/app/components/modals/Modal";
 import useAdminProductModal from "@/app/hooks/useAdminProductModal";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import {SafeBrand, SafeCategory} from "@/app/types";
-import aws from "@/app/api/upload-img/route";
+import aws from "@/app/api/upload-img";
 
 
 type AdminProductModalProps = {
