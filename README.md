@@ -1,2 +1,2 @@
-# PC Accessories Website
+# PC Accessories
 https://pc-accessories.mys1erious.com/
